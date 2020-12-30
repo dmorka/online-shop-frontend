@@ -104,7 +104,7 @@ export default {
       phoneNumber: {
         required,
         minLength: minLength(3),
-        maxLength: maxLength(30),
+        maxLength: maxLength(15),
         phoneRegex,
       },
     },
@@ -117,6 +117,8 @@ export default {
     resetForm() {
       this.form = {
         email: null,
+        username: null,
+        phoneNumber: null
       };
 
       this.$nextTick(() => {
