@@ -25,7 +25,7 @@
         </b-form-group>
       </b-col>
       <b-col md="auto" style="padding-top: 30px">
-          <b-button id="searchBtn" variant="info" type="button" v-on:click="searchProduct()">Search</b-button>
+          <b-button id="searchBtn" variant="info" type="button" v-on:click="emitFilterProduct()">Search</b-button>
       </b-col>
     </b-form-row>
   </b-form>
@@ -33,6 +33,7 @@
 
 <script>
 import axios from "axios";
+import EventBus from "@/utils/event-bus";
 
 export default {
   name: "search-product-by-name-or-category",
@@ -46,8 +47,8 @@ export default {
     }
   },
   methods: {
-    searchProduct: function () {
-      this.$root.$emit('searchProduct', this.form);
+    emitFilterProduct: function () {
+      EventBus.$emit('FilterProduct', this.form);
     }
   },
   mounted() {
