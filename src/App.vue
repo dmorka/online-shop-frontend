@@ -1,28 +1,18 @@
-<template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
-</template>
+<!--<template>-->
+<!--  <b-container>-->
+<!--    <h1>Online Shop</h1>-->
+<!--    <SearchProductByNameOrCategory />-->
+<!--  </b-container>-->
+<!--</template>-->
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<!--<script>-->
+<!--import SearchProductByNameOrCategory from './components/searchProductByNameOrCategory.vue'-->
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
+<!--export default {-->
+<!--  name: 'App',-->
+<!--  components: {-->
+<!--    SearchProductByNameOrCategory-->
+<!--  }-->
+<!--}-->
+<!--</script>-->
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
