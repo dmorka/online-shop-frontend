@@ -1,19 +1,31 @@
 <template>
-  <b-form v-if="show">
-    <b-form-row class="justify-content-md-center">
+  <b-form class="m-4">
+    <b-form-row class="justify-content-center">
       <b-col md="auto">
+        <b-form-group
+            id="input-group-1"
+            label="Product name:"
+            label-for="inputProductName"
+        >
         <b-form-input
             id="inputProductName"
             v-model="form.productName"
             type="text"
-            placeholder="Nazwa produktu"
+            placeholder="Name"
         ></b-form-input>
+        </b-form-group>
       </b-col>
       <b-col md="auto">
-        <b-form-select v-model="form.category" :options="categories"></b-form-select>
+        <b-form-group
+            id="input-group-2"
+            label="Category: "
+            label-for="selectCategory"
+        >
+        <b-form-select id="selectCategory" v-model="form.category" :options="categories"></b-form-select>
+        </b-form-group>
       </b-col>
-      <b-col md="auto">
-        <b-button variant="info" type="button" v-on:click="searchProduct()">Szukaj</b-button>
+      <b-col md="auto" style="padding-top: 30px">
+          <b-button id="searchBtn" variant="info" type="button" v-on:click="searchProduct()">Search</b-button>
       </b-col>
     </b-form-row>
   </b-form>
@@ -31,7 +43,6 @@ export default {
         category: null
       },
       categories: [{value: null, text: ""}],
-      show: true
     }
   },
   methods: {
