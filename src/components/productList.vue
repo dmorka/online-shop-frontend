@@ -11,7 +11,7 @@
           {{data.item.price}}
         </template>
         <template #cell(action)>
-          <b-row >
+          <b-row>
             <b-button class="m-1" v-if="showAddToCartButton" variant="info">Add To Cart</b-button>
             <b-input  class="m-1" v-if="showNumberOfItemsInput" type="number" min="1" max="999"></b-input>
             <b-button class="m-1" v-if="showEditButton" variant="warning">Edit</b-button>
@@ -25,6 +25,7 @@
 
 <script>
 import {_} from 'vue-underscore'
+import EventBus from "@/utils/event-bus";
 export default {
   props: {
     productList: {
@@ -63,11 +64,19 @@ export default {
   },
   methods: {
     addItem: function () {
-      this.iterator += 1
-      this.pagedProductList = _.first(this.productList, 2 * this.iterator)
+      this.iterator += 1;
+      this.updateList();
     },
+    updateList: function () {
+      this.pagedProductList = _.first(this.productList, 2 * this.iterator);
+    }
   },
   mounted() {
+    EventBus.$on("UpdateProductList", () => {
+      this.$nextTick(() => {
+        this.updateList();
+      });
+    });
     this.addItem();
   }
 }

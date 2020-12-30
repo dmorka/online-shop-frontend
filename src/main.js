@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import './plugins/bootstrap-vue'
-// import App from './App.vue'
 import VueRouter from 'vue-router'
 import Supply from './pages/stock'
 import Shop from './pages/shop'
 import ShoppingCart from './pages/shopingCart'
 import Orders from './pages/orders'
+// import App from "@/App";
 
 Vue.use(VueRouter)
 
@@ -30,18 +30,5 @@ new Vue({
 })
 
 // new Vue({
-//   router,
-//   template: `
-//     <div id="app">
-//       <h1>Route Alias</h1>
-//       <ul>
-//         <li><router-link to="/shop">
-//           /root-alias (renders /root)
-//         </router-link></li>
-//         <li><router-link to="/shopping-cart">
-//           /foo (renders /home/foo)
-//         </router-link></li>
-//       <router-view class="view"></router-view>
-//     </div>
-//   `
+//   render: h => h(App),
 // }).$mount('#app')

@@ -9,7 +9,7 @@
     <section v-else>
       <div v-if="loading">Loading...</div>
       <div v-else>
-        <ProductList :product-list="productList" show-add-to-cart-button />
+        <ProductList :product-list="filteredProductList" show-add-to-cart-button />
       </div>
     </section>
   </b-container>
@@ -20,6 +20,8 @@ import SearchProductByNameOrCategory from "@/components/searchProductByNameOrCat
 import Navbar from "@/components/navBar";
 import ProductList from "@/components/productList";
 import axios from "axios";
+import EventBus from "@/utils/event-bus";
+import {_} from "vue-underscore";
 
 export default {
   name: "shop",
@@ -31,20 +33,47 @@ export default {
       loading: true,
       // loading: false,
       errored: false,
+      filteredProductList: null,
+    }
+  },
+  methods: {
+    normalizeString: function (text) {
+      return (_.isString(text)) ? text.toLowerCase().replace(/\s+/g, '') : text
+    },
+    filterProducts: function (form) {
+      if (form) {
+        let self = this;
+        return _.filter(this.productList, function (product) {
+          if (form.productName !== "" && !(self.normalizeString(product.name)).includes(self.normalizeString(form.productName))) {
+            console.log(product.name);
+            return false;
+          }
+          return !(form.category !== null && form.category !== product.category);
+        });
+      } else {
+        return [];
+      }
+    },
+    emitUpdateProductList: () => {
+      EventBus.$emit("UpdateProductList");
     }
   },
   mounted() {
     axios
         .get('https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/products')
         .then(response => {
-          console.log("RESPONSE: " + response.data.products);
           this.productList = response.data.products;
+          this.filteredProductList = this.productList;
         })
         .catch(error => {
           console.log(error)
           this.errored = true
         })
         .finally(() => this.loading = false)
+    EventBus.$on("FilterProduct", (form) => {
+      this.filteredProductList = this.filterProducts(form);
+      this.emitUpdateProductList();
+    });
   }
 }
 </script>
