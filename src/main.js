@@ -5,30 +5,25 @@ import Supply from './pages/stock'
 import Shop from './pages/shop'
 import ShoppingCart from './pages/shopingCart'
 import Orders from './pages/orders'
-// import App from "@/App";
+import store from './utils/store'
+import App from "@/App";
 
 Vue.use(VueRouter)
 
-const routes = {
-  '/': Shop,
-  '/stock': Supply,
-  '/cart': ShoppingCart,
-  '/orders': Orders
-}
+const routes = [
+  { path: '/', component: Shop },
+  { path: '/stock', component: Supply },
+  { path: '/cart', component: ShoppingCart },
+  { path: '/orders', component: Orders },
+]
 
-new Vue({
-  el: '#app',
-  data: {
-    currentRoute: window.location.pathname
-  },
-  computed: {
-    ViewComponent () {
-      return routes[this.currentRoute]
-    }
-  },
-  render (h) { return h(this.ViewComponent) }
+const router = new VueRouter({
+  routes
 })
 
-// new Vue({
-//   render: h => h(App),
-// }).$mount('#app')
+new Vue({
+  router,
+  store,
+  render: h => h(App),
+}).$mount('#app')
+

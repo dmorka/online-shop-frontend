@@ -107,6 +107,7 @@ body {
 
 <script>
 import { validationMixin } from "vuelidate";
+import EventBus from "@/utils/event-bus";
 import {
   required,
   minLength,
@@ -119,12 +120,6 @@ export default {
   mixins: [validationMixin],
   data() {
     return {
-      categories: [
-        { value: 1, text: "Elektronika" },
-        { value: 2, text: "Dom i ogród" },
-        { value: 3, text: "Motoryzacja" },
-        { value: 4, text: "Zdrowie" },
-      ],
       form: {
         productname: null,
         productdesc: null,
@@ -132,6 +127,12 @@ export default {
         productweight: null,
         productcategory: null,
       },
+      categories: [
+        { value: 1, text: "Elektronika" },
+        { value: 2, text: "Dom i ogród" },
+        { value: 3, text: "Motoryzacja" },
+        { value: 4, text: "Zdrowie" },
+      ],
     };
   },
   validations: {
@@ -187,6 +188,17 @@ export default {
 
       alert("Form submitted!");
     },
+  },
+  mounted() {
+    EventBus.$on("UpdateProduct", (product) => {
+      this.form = {
+        productname: product.name,
+        productdesc: product.description,
+        productprice: product.price,
+        productweight: product.weight,
+        productcategory: product.category,
+      };
+    });
   },
 };
 </script>
