@@ -1,18 +1,11 @@
-<!--<template>-->
-<!--  <b-container>-->
-<!--    <h1>Online Shop</h1>-->
-<!--    <SearchProductByNameOrCategory />-->
-<!--  </b-container>-->
-<!--</template>-->
+<template>
+    <router-view></router-view>
+</template>
 
-<!--<script>-->
-<!--import SearchProductByNameOrCategory from './components/searchProductByNameOrCategory.vue'-->
+<script>
 
-<!--export default {-->
-<!--  name: 'App',-->
-<!--  components: {-->
-<!--    SearchProductByNameOrCategory-->
-<!--  }-->
-<!--}-->
-<!--</script>-->
+export default {
+  name: 'App',
+}
+</script>
 

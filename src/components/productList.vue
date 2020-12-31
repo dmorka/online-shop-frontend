@@ -10,9 +10,9 @@
         <template #cell(price)="data">
           {{data.item.price}}
         </template>
-        <template #cell(action)>
+        <template #cell(action)="data">
           <b-row>
-            <b-button class="m-1" v-if="showAddToCartButton" variant="info">Add To Cart</b-button>
+            <b-button class="m-1" v-if="showAddToCartButton" variant="info" @click="addProductToCart(data.item)">Add To Cart</b-button>
             <b-input  class="m-1" v-if="showNumberOfItemsInput" type="number" min="1" max="999"></b-input>
             <b-button class="m-1" v-if="showEditButton" variant="warning">Edit</b-button>
             <b-button class="m-1" v-if="showRemoveButton" variant="danger">Remove</b-button>
@@ -69,6 +69,9 @@ export default {
     },
     updateList: function () {
       this.pagedProductList = _.first(this.productList, 2 * this.iterator);
+    },
+    addProductToCart: function (product) {
+      this.$store.dispatch('addItemToCart', product);
     }
   },
   mounted() {
