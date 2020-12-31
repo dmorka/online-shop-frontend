@@ -2,56 +2,56 @@
   <div class="userdata">
     <b-form @submit.stop.prevent="onSubmit">
       <b-form-group
-        id="username-input-group"
-        label="Username"
-        label-for="username-input"
+          id="username-input-group"
+          label="Username"
+          label-for="username-input"
       >
         <b-form-input
-          id="username-input"
-          name="username-input"
-          v-model="$v.form.username.$model"
-          :state="validateState('username')"
-          aria-describedby="username-feedback"
+            id="username-input"
+            name="username-input"
+            v-model="$v.form.username.$model"
+            :state="validateState('username')"
+            aria-describedby="username-feedback"
         ></b-form-input>
 
         <b-form-invalid-feedback id="username-feedback"
-          >Username cannot be shorter than 3 characters and longer than 30.</b-form-invalid-feedback
+        >Username cannot be shorter than 3 characters and longer than 30.</b-form-invalid-feedback
         >
       </b-form-group>
 
       <b-form-group
-        id="email-input-group"
-        label="Email"
-        label-for="email-input"
+          id="email-input-group"
+          label="Email"
+          label-for="email-input"
       >
         <b-form-input
-          id="email-input"
-          name="email-input"
-          v-model="$v.form.email.$model"
-          :state="validateState('email')"
-          aria-describedby="email-feedback"
+            id="email-input"
+            name="email-input"
+            v-model="$v.form.email.$model"
+            :state="validateState('email')"
+            aria-describedby="email-feedback"
         ></b-form-input>
 
         <b-form-invalid-feedback id="email-feedback"
-          >Invalid email format.</b-form-invalid-feedback
+        >Invalid email format.</b-form-invalid-feedback
         >
       </b-form-group>
 
       <b-form-group
-        id="phoneNumber-input-group"
-        label="Phone number"
-        label-for="phoneNumber-input"
+          id="phoneNumber-input-group"
+          label="Phone number"
+          label-for="phoneNumber-input"
       >
         <b-form-input
-          id="phoneNumber-input"
-          name="phoneNumber-input"
-          v-model="$v.form.phoneNumber.$model"
-          :state="validateState('phoneNumber')"
-          aria-describedby="phoneNumber-feedback"
+            id="phoneNumber-input"
+            name="phoneNumber-input"
+            v-model="$v.form.phoneNumber.$model"
+            :state="validateState('phoneNumber')"
+            aria-describedby="phoneNumber-feedback"
         ></b-form-input>
 
         <b-form-invalid-feedback id="phoneNumber-feedback"
-          >Invalid phone number format.</b-form-invalid-feedback
+        >Invalid phone number format.</b-form-invalid-feedback
         >
       </b-form-group>
 
@@ -69,6 +69,7 @@ body {
 
 <script>
 import { validationMixin } from "vuelidate";
+import EventBus from "@/utils/event-bus";
 import {
   required,
   email,
@@ -110,29 +111,24 @@ export default {
     },
   },
   methods: {
-    validateState: (name) => {
+    validateState(name) {
       const { $dirty, $error } = this.$v.form[name];
       return $dirty ? !$error : null;
     },
-    resetForm: () => {
-      this.form = {
-        email: null,
-        username: null,
-        phoneNumber: null
-      };
-
-      this.$nextTick(() => {
-        this.$v.$reset();
-      });
-    },
-    onSubmit: () => {
+    onSubmit() {
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {
         return;
       }
-
       alert("Form submitted!");
     },
   },
+  mounted() {
+    EventBus.$on("UpdateProduct", (product) => {
+      console.log(product);
+      this.form = product;
+    });
+  },
 };
 </script>
+
