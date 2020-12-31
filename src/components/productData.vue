@@ -1,11 +1,7 @@
 <template>
   <div class="productdata">
     <b-form @submit.stop.prevent="onSubmit">
-      <b-form-group
-        id="name-input-group"
-        label="Name"
-        label-for="name-input"
-      >
+      <b-form-group id="name-input-group" label="Name" label-for="name-input">
         <b-form-input
           id="name-input"
           name="name-input"
@@ -93,8 +89,7 @@
           >Product weight must be positive number.</b-form-invalid-feedback
         >
       </b-form-group>
-      <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button class="ml-2" @click="resetForm()">Reset</b-button>
+      <b-button type="  " variant="primary">Submit</b-button>
     </b-form>
   </div>
 </template>
@@ -108,6 +103,7 @@ body {
 <script>
 import { validationMixin } from "vuelidate";
 import EventBus from "@/utils/event-bus";
+import axios from "axios";
 import {
   required,
   minLength,
@@ -121,6 +117,7 @@ export default {
   data() {
     return {
       form: {
+        id: null,
         name: null,
         description: null,
         price: null,
@@ -167,26 +164,27 @@ export default {
       const { $dirty, $error } = this.$v.form[name];
       return $dirty ? !$error : null;
     },
-    resetForm() {
-      this.form = {
-        name: null,
-        description: null,
-        price: null,
-        weight: null,
-        category: null,
-      };
-
-      this.$nextTick(() => {
-        this.$v.$reset();
-      });
+    updateProduct() {
+      axios
+        .put(
+          "https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/products/" +
+            this.form.id,
+          this.form
+        )
+        .then((response) => {
+          console.log("RESPONSE: " + response.data.products);
+          alert(response.data.message);
+        })
+        .catch((error) => {
+          alert(error.message);
+        })
     },
     onSubmit() {
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {
         return;
       }
-
-      alert("Form submitted!");
+      this.updateProduct();
     },
   },
   mounted() {

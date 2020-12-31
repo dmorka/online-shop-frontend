@@ -49,7 +49,7 @@
       >Show more</b-button
     >
 
-    <b-modal ref="bv-modal-example" hide-footer>
+    <b-modal ref="bv-modal-example" title="Update product" hide-footer>
       <Productdata />
     </b-modal>
   </div>
