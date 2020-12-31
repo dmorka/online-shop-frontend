@@ -29,7 +29,7 @@ export default {
       _.each(this.shoppingCartList, function (product) {
         totalCost += _.get(product, 'quantity', 0) * _.get(product, 'price', 0);
       })
-      return totalCost;
+      return totalCost.toFixed(2);
     }
   },
   methods: {

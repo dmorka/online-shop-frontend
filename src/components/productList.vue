@@ -100,11 +100,9 @@ export default {
       this.$emit('remove-product', product)
     },
     quantityChanged: function (product) {
-      console.log("CIPKA: "+product.quantity);
       this.$store.dispatch('changeQuantity', product);
     },
     updateProduct(product) {
-      console.log("SIUSIAK");
       setTimeout(function () {EventBus.$emit("UpdateProduct", product)}, 300)
       this.$refs["bv-modal-example"].show();
 
