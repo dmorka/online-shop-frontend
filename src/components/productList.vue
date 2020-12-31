@@ -18,35 +18,24 @@
       </template>
       <template #cell(action)="data">
         <b-row>
+          <b-button v-if="showAddToCartButton" class="m-1" variant="info" @click="addProductToCart(data.item)">Add To
+            Cart
+          </b-button>
+          <b-input v-if="showNumberOfItemsInput" v-model="data.item.quantity" class="m-1" max="999" min="1"
+                   type="number" @change="quantityChanged(data.item)"></b-input>
           <b-button
-            class="m-1"
-            v-if="showAddToCartButton"
-            variant="info"
-            @click="addProductToCart(data.item)"
-            >Add To Cart</b-button
-          >
-          <b-input
-            class="m-1"
-            v-if="showNumberOfItemsInput"
-            type="number"
-            min="1"
-            max="999"
-          ></b-input>
-          <b-button
-            class="m-1"
-            v-if="showEditButton"
-            variant="warning"
-            v-on:click="updateProduct(data.item)"
-            >Edit</b-button
-          >
-          <b-button class="m-1" v-if="showRemoveButton" variant="danger"
-            >Remove</b-button
-          >
+              class="m-1"
+              v-if="showEditButton"
+              variant="warning"
+              v-on:click="updateProduct(data.item)"
+          >Edit</b-button>
+          <b-button v-if="showRemoveButton" class="m-1" variant="danger" @click="removeProduct(data.item)">Remove
+          </b-button>
         </b-row>
       </template>
     </b-table>
     <b-button variant="info col-sm-12" type="button" v-on:click="addItem()"
-      >Show more</b-button
+    >Show more</b-button
     >
 
     <b-modal ref="bv-modal-example" title="Update product" hide-footer>
@@ -64,37 +53,37 @@ export default {
   props: {
     productList: {
       type: Array,
-      required: false,
+      required: false
     },
     showAddToCartButton: {
       type: Boolean,
-      default: false,
+      default: false
     },
     showEditButton: {
       type: Boolean,
-      default: false,
+      default: false
     },
     showRemoveButton: {
       type: Boolean,
-      default: false,
+      default: false
     },
     showNumberOfItemsInput: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   name: "productList",
-  data() {
+  data () {
     return {
       fields: [
-        { key: "name", label: "Product name" },
-        { key: "description", label: "Description" },
-        { key: "price", label: "Price" },
-        { key: "action", label: "Action" },
+        { key: "name", label: "Product name"},
+        { key: "description", label: "Description"},
+        { key: "price", label: "Price"},
+        { key: "action", label: "Action"}
       ],
       iterator: 0,
-      pagedProductList: null,
-    };
+      pagedProductList: null
+    }
   },
   methods: {
     addItem: function () {
@@ -105,13 +94,20 @@ export default {
       this.pagedProductList = _.first(this.productList, 2 * this.iterator);
     },
     addProductToCart: function (product) {
-      this.$store.dispatch("addItemToCart", product);
+      this.$store.dispatch('addItemToCart', product);
+    },
+    removeProduct: function (product) {
+      this.$emit('remove-product', product)
+    },
+    quantityChanged: function (product) {
+      console.log("CIPKA: "+product.quantity);
+      this.$store.dispatch('changeQuantity', product);
     },
     updateProduct(product) {
       console.log("SIUSIAK");
       setTimeout(function () {EventBus.$emit("UpdateProduct", product)}, 300)
       this.$refs["bv-modal-example"].show();
-      
+
       console.log(product);
     },
   },
@@ -122,28 +118,33 @@ export default {
       });
     });
     this.addItem();
-  },
-};
+  }
+}
 </script>
 
 <style scoped>
-.productList {
-  margin: 50px 0;
-}
-.productsTable >>> th:nth-child(1) {
-  width: 25%;
-}
-.productsTable >>> th:nth-child(2) {
-  width: 50%;
-}
-.productsTable >>> th:nth-child(3) {
-  width: 10%;
-}
-.productsTable >>> th:nth-child(4) {
-  width: 15%;
-}
-input {
-  width: 50px;
-  padding: 3px;
-}
+  .productList {
+    margin: 50px 0;
+  }
+
+  .productsTable >>> th:nth-child(1) {
+    width: 25%;
+  }
+
+  .productsTable >>> th:nth-child(2) {
+    width: 50%;
+  }
+
+  .productsTable >>> th:nth-child(3) {
+    width: 10%;
+  }
+
+  .productsTable >>> th:nth-child(4) {
+    width: 15%;
+  }
+
+  input {
+    width: 50px;
+    padding: 3px;
+  }
 </style>
