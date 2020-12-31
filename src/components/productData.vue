@@ -2,94 +2,94 @@
   <div class="productdata">
     <b-form @submit.stop.prevent="onSubmit">
       <b-form-group
-        id="productname-input-group"
+        id="name-input-group"
         label="Name"
-        label-for="productname-input"
+        label-for="name-input"
       >
         <b-form-input
-          id="productname-input"
-          name="productname-input"
-          v-model="$v.form.productname.$model"
-          :state="validateState('productname')"
-          aria-describedby="productname-feedback"
+          id="name-input"
+          name="name-input"
+          v-model="$v.form.name.$model"
+          :state="validateState('name')"
+          aria-describedby="name-feedback"
         ></b-form-input>
 
-        <b-form-invalid-feedback id="productname-feedback"
+        <b-form-invalid-feedback id="name-feedback"
           >Product name cannot be shorter than 3 characters and longer than
           20.</b-form-invalid-feedback
         >
       </b-form-group>
 
       <b-form-group
-        id="productdesc-input-group"
+        id="description-input-group"
         label="Description"
-        label-for="productdesc-input"
+        label-for="description-input"
       >
         <b-form-textarea
-          id="productdesc-input"
-          name="productdesc-input"
+          id="description-input"
+          name="description-input"
           rows="3"
           max-rows="3"
-          v-model="$v.form.productdesc.$model"
-          :state="validateState('productdesc')"
-          aria-describedby="productdesc-feedback"
+          v-model="$v.form.description.$model"
+          :state="validateState('description')"
+          aria-describedby="description-feedback"
         ></b-form-textarea>
 
-        <b-form-invalid-feedback id="productdesc-feedback"
+        <b-form-invalid-feedback id="description-feedback"
           >Product description cannot be longer than 300
           characters.</b-form-invalid-feedback
         >
       </b-form-group>
 
       <b-form-group
-        id="productprice-input-group"
+        id="price-input-group"
         label="Price"
-        label-for="productprice-input"
+        label-for="price-input"
       >
         <b-form-input
-          id="productprice-input"
-          name="productprice-input"
-          v-model="$v.form.productprice.$model"
-          :state="validateState('productprice')"
-          aria-describedby="productprice-feedback"
+          id="price-input"
+          name="price-input"
+          v-model="$v.form.price.$model"
+          :state="validateState('price')"
+          aria-describedby="price-feedback"
         ></b-form-input>
 
-        <b-form-invalid-feedback id="productprice-feedback"
+        <b-form-invalid-feedback id="price-feedback"
           >Product price must be positive number.</b-form-invalid-feedback
         >
       </b-form-group>
 
       <b-form-group
-        id="productweight-input-group"
+        id="weight-input-group"
         label="Weight"
-        label-for="productweight-input"
+        label-for="weight-input"
       >
         <b-form-input
-          id="productweight-input"
-          name="productweight-input"
-          v-model="$v.form.productweight.$model"
-          :state="validateState('productweight')"
-          aria-describedby="productweight-feedback"
+          id="weight-input"
+          name="weight-input"
+          v-model="$v.form.weight.$model"
+          :state="validateState('weight')"
+          aria-describedby="weight-feedback"
         ></b-form-input>
 
-        <b-form-invalid-feedback id="productweight-feedback"
+        <b-form-invalid-feedback id="weight-feedback"
           >Product weight must be positive number.</b-form-invalid-feedback
         >
       </b-form-group>
       <b-form-group
-        id="productcategory-select-group"
+        id="category-select-group"
         label="Category"
-        label-for="productcategory-select"
+        label-for="category-select"
       >
         <b-form-select
-          id="productcategory-select"
-          name="productcategory-input"
-          v-model="form.productcategory"
+          id="category-select"
+          name="category-input"
+          v-model="form.category"
           :options="categories"
-          aria-describedby="productcategory-feedback"
+          aria-describedby="category-feedback"
         ></b-form-select>
 
-        <b-form-invalid-feedback id="productcategory-feedback"
+        <b-form-invalid-feedback id="category-feedback"
           >Product weight must be positive number.</b-form-invalid-feedback
         >
       </b-form-group>
@@ -121,11 +121,11 @@ export default {
   data() {
     return {
       form: {
-        productname: null,
-        productdesc: null,
-        productprice: null,
-        productweight: null,
-        productcategory: null,
+        name: null,
+        description: null,
+        price: null,
+        weight: null,
+        category: null,
       },
       categories: [
         { value: 1, text: "Elektronika" },
@@ -137,27 +137,27 @@ export default {
   },
   validations: {
     form: {
-      productname: {
+      name: {
         required,
         minLength: minLength(3),
         maxLength: maxLength(20),
       },
-      productdesc: {
+      description: {
         required,
         minLength: minLength(3),
         maxLength: maxLength(300),
       },
-      productprice: {
+      price: {
         required,
         decimal,
         minValue: minValue(0.001),
       },
-      productweight: {
+      weight: {
         required,
         decimal,
         minValue: minValue(0.001),
       },
-      productcategory: {
+      category: {
         required,
       },
     },
@@ -169,11 +169,11 @@ export default {
     },
     resetForm() {
       this.form = {
-        productname: null,
-        productdesc: null,
-        productprice: null,
-        productweight: null,
-        productcategory: null,
+        name: null,
+        description: null,
+        price: null,
+        weight: null,
+        category: null,
       };
 
       this.$nextTick(() => {
@@ -191,13 +191,8 @@ export default {
   },
   mounted() {
     EventBus.$on("UpdateProduct", (product) => {
-      this.form = {
-        productname: product.name,
-        productdesc: product.description,
-        productprice: product.price,
-        productweight: product.weight,
-        productcategory: product.category,
-      };
+      console.log(product);
+      this.form = product;
     });
   },
 };
