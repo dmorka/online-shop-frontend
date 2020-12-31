@@ -4,7 +4,8 @@
     <h2 class="display-4 text-center">Shopping Cart</h2>
     <ProductList :product-list="shoppingCartList" showRemoveButton showNumberOfItemsInput
                 @remove-product="removeProductFromCart" />
-    <Userdata/>
+    <p><b>TOTAL COST:</b> {{ totalCost}}</p>
+    <Userdata />
   </b-container>
 </template>
 
@@ -22,6 +23,13 @@ export default {
       return _.map(this.$store.state.shoppingCart, function (num) {
         return num;
       });
+    },
+    totalCost() {
+      let totalCost = 0;
+      _.each(this.shoppingCartList, function (product) {
+        totalCost += _.get(product, 'quantity', 0) * _.get(product, 'price', 0);
+      })
+      return totalCost;
     }
   },
   methods: {

@@ -45,7 +45,6 @@ export default {
         let self = this;
         return _.filter(this.productList, function (product) {
           if (form.productName !== "" && !(self.normalizeString(product.name)).includes(self.normalizeString(form.productName))) {
-            console.log(product.name);
             return false;
           }
           return !(form.category !== null && form.category !== product.category);
