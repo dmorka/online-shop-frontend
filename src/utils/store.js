@@ -1,6 +1,7 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import {_} from "vue-underscore";
+import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex);
 
@@ -59,7 +60,10 @@ const store = new Vuex.Store({
                 context.commit('changeQuantity', product, newQuantity);
             }
         }
-    }
+    },
+    plugins: [
+        createPersistedState({ storage: window.localStorage })
+    ],
 });
 
 export default store;
