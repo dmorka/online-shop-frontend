@@ -1,66 +1,97 @@
 <template>
   <div class="productList">
-      <b-table class="productsTable" small :fields="fields" :items="pagedProductList" responsive="sm">
-        <template #cell(name)="data">
-          {{data.item.name}}
-        </template>
-        <template #cell(description)="data">
-          {{data.item.description}}
-        </template>
-        <template #cell(price)="data">
-          {{data.item.price}}
-        </template>
-        <template #cell(action)>
-          <b-row>
-            <b-button class="m-1" v-if="showAddToCartButton" variant="info">Add To Cart</b-button>
-            <b-input  class="m-1" v-if="showNumberOfItemsInput" type="number" min="1" max="999"></b-input>
-            <b-button class="m-1" v-if="showEditButton" variant="warning">Edit</b-button>
-            <b-button class="m-1" v-if="showRemoveButton" variant="danger">Remove</b-button>
-          </b-row>
-        </template>
-      </b-table>
-      <b-button variant="info col-sm-12" type="button" v-on:click="addItem()">Show more</b-button>
+    <b-table
+      class="productsTable"
+      small
+      :fields="fields"
+      :items="pagedProductList"
+      responsive="sm"
+    >
+      <template #cell(name)="data">
+        {{ data.item.name }}
+      </template>
+      <template #cell(description)="data">
+        {{ data.item.description }}
+      </template>
+      <template #cell(price)="data">
+        {{ data.item.price }}
+      </template>
+      <template #cell(action)>
+        <b-row>
+          <b-button class="m-1" v-if="showAddToCartButton" variant="info"
+            >Add To Cart</b-button
+          >
+          <b-input
+            class="m-1"
+            v-if="showNumberOfItemsInput"
+            type="number"
+            min="1"
+            max="999"
+          ></b-input>
+          <b-button
+            class="m-1"
+            v-if="showEditButton"
+            variant="warning"
+            v-b-modal.modal-1
+            >Edit</b-button
+          >
+          <b-button class="m-1" v-if="showRemoveButton" variant="danger"
+            >Remove</b-button
+          >
+        </b-row>
+      </template>
+    </b-table>
+    <b-button variant="info col-sm-12" type="button" v-on:click="addItem()"
+      >Show more</b-button
+    >
+
+    <b-modal id="modal-1" title="Edit product" hide-footer>
+      <Productdata />
+    </b-modal>
   </div>
 </template>
 
 <script>
-import {_} from 'vue-underscore'
+import { _ } from "vue-underscore";
 import EventBus from "@/utils/event-bus";
+import Productdata from "@/components/productData";
+
 export default {
+  components: { Productdata },
   props: {
     productList: {
       type: Array,
-      required: false
+      required: false,
     },
     showAddToCartButton: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showEditButton: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showRemoveButton: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showNumberOfItemsInput: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   name: "productList",
-  data () {
+  data() {
     return {
       fields: [
-        { key: "name", label: "Product name"},
-        { key: "description", label: "Description"},
-        { key: "price", label: "Price"},
-        { key: "action", label: "Action"}
+        { key: "name", label: "Product name" },
+        { key: "description", label: "Description" },
+        { key: "price", label: "Price" },
+        { key: "action", label: "Action" },
       ],
       iterator: 0,
-      pagedProductList: null
-    }
+      pagedProductList: null,
+    };
   },
   methods: {
     addItem: function () {
@@ -69,7 +100,7 @@ export default {
     },
     updateList: function () {
       this.pagedProductList = _.first(this.productList, 2 * this.iterator);
-    }
+    },
   },
   mounted() {
     EventBus.$on("UpdateProductList", () => {
@@ -78,33 +109,33 @@ export default {
       });
     });
     this.addItem();
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
-  .productList {
-    margin: 50px 0;
-  }
+.productList {
+  margin: 50px 0;
+}
 
-  .productsTable >>> th:nth-child(1) {
-    width: 25%;
-  }
+.productsTable >>> th:nth-child(1) {
+  width: 25%;
+}
 
-  .productsTable >>> th:nth-child(2) {
-    width: 50%;
-  }
+.productsTable >>> th:nth-child(2) {
+  width: 50%;
+}
 
-  .productsTable >>> th:nth-child(3) {
-    width: 10%;
-  }
+.productsTable >>> th:nth-child(3) {
+  width: 10%;
+}
 
-  .productsTable >>> th:nth-child(4) {
-    width: 15%;
-  }
+.productsTable >>> th:nth-child(4) {
+  width: 15%;
+}
 
-  input {
-    width: 50px;
-    padding: 3px;
-  }
+input {
+  width: 50px;
+  padding: 3px;
+}
 </style>
