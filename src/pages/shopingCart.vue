@@ -16,7 +16,7 @@ export default {
   name: "shopingCart",
   components: {Navbar, Userdata, ProductList},
   computed: {
-    shoppingCartList() {
+    shoppingCartList: function () {
       return _.map(this.$store.state.shoppingCart, function (num) {
         return num.product;
       });

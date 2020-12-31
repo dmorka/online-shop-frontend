@@ -110,11 +110,11 @@ export default {
     },
   },
   methods: {
-    validateState(name) {
+    validateState: (name) => {
       const { $dirty, $error } = this.$v.form[name];
       return $dirty ? !$error : null;
     },
-    resetForm() {
+    resetForm: () => {
       this.form = {
         email: null,
         username: null,
@@ -125,7 +125,7 @@ export default {
         this.$v.$reset();
       });
     },
-    onSubmit() {
+    onSubmit: () => {
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {
         return;
