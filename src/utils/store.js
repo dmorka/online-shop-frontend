@@ -1,6 +1,6 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
-import {_} from "vue-underscore";
+import { _ } from "vue-underscore";
 import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex);
@@ -25,11 +25,12 @@ const store = new Vuex.Store({
             if (found) {
                 found.quantity = (found.quantity * 1) + 1;
             } else {
-                _.extend(product, {quantity: 1})
+                _.extend(product, { quantity: 1 })
                 state.shoppingCart.push(product);
             }
         },
         removeItemFromCart(state, product) {
+            state.totalCost -= product.price * product.quantity
             state.shoppingCart = _.filter(state.shoppingCart, function (item) {
                 return item.id !== product.id;
             });
@@ -38,7 +39,6 @@ const store = new Vuex.Store({
             let item = _.find(state.shoppingCart, function (item) {
                 return item.id === product.id;
             });
-
             if (item) {
                 item.quantity = product.quantity;
             }

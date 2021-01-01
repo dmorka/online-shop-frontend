@@ -172,7 +172,6 @@ export default {
           this.form
         )
         .then((response) => {
-          console.log("RESPONSE: " + response.data.products);
           alert(response.data.message);
         })
         .catch((error) => {

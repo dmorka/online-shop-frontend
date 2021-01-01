@@ -2,61 +2,61 @@
   <div class="userdata">
     <b-form @submit.stop.prevent="onSubmit">
       <b-form-group
-          id="username-input-group"
-          label="Username"
-          label-for="username-input"
+        id="userName-input-group"
+        label="Username"
+        label-for="userName-input"
       >
         <b-form-input
-            id="username-input"
-            name="username-input"
-            v-model="$v.form.username.$model"
-            :state="validateState('username')"
-            aria-describedby="username-feedback"
+          id="userName-input"
+          name="userName-input"
+          v-model="$v.form.userName.$model"
+          :state="validateState('userName')"
+          aria-describedby="userName-feedback"
         ></b-form-input>
 
-        <b-form-invalid-feedback id="username-feedback"
-        >Username cannot be shorter than 3 characters and longer than 30.</b-form-invalid-feedback
+        <b-form-invalid-feedback id="userName-feedback"
+          >Username cannot be shorter than 3 characters and longer than
+          30.</b-form-invalid-feedback
         >
       </b-form-group>
 
       <b-form-group
-          id="email-input-group"
-          label="Email"
-          label-for="email-input"
+        id="email-input-group"
+        label="Email"
+        label-for="email-input"
       >
         <b-form-input
-            id="email-input"
-            name="email-input"
-            v-model="$v.form.email.$model"
-            :state="validateState('email')"
-            aria-describedby="email-feedback"
+          id="email-input"
+          name="email-input"
+          v-model="$v.form.email.$model"
+          :state="validateState('email')"
+          aria-describedby="email-feedback"
         ></b-form-input>
 
         <b-form-invalid-feedback id="email-feedback"
-        >Invalid email format.</b-form-invalid-feedback
+          >Invalid email format.</b-form-invalid-feedback
         >
       </b-form-group>
 
       <b-form-group
-          id="phoneNumber-input-group"
-          label="Phone number"
-          label-for="phoneNumber-input"
+        id="phoneNumber-input-group"
+        label="Phone number"
+        label-for="phoneNumber-input"
       >
         <b-form-input
-            id="phoneNumber-input"
-            name="phoneNumber-input"
-            v-model="$v.form.phoneNumber.$model"
-            :state="validateState('phoneNumber')"
-            aria-describedby="phoneNumber-feedback"
+          id="phoneNumber-input"
+          name="phoneNumber-input"
+          v-model="$v.form.phoneNumber.$model"
+          :state="validateState('phoneNumber')"
+          aria-describedby="phoneNumber-feedback"
         ></b-form-input>
 
         <b-form-invalid-feedback id="phoneNumber-feedback"
-        >Invalid phone number format.</b-form-invalid-feedback
+          >Invalid phone number format.</b-form-invalid-feedback
         >
       </b-form-group>
 
-      <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button class="ml-2" @click="resetForm()">Reset</b-button>
+      <b-button type="submit" variant="primary">Order</b-button>
     </b-form>
   </div>
 </template>
@@ -70,6 +70,8 @@ body {
 <script>
 import { validationMixin } from "vuelidate";
 import EventBus from "@/utils/event-bus";
+import axios from "axios";
+import { _ } from "vue-underscore";
 import {
   required,
   email,
@@ -78,7 +80,10 @@ import {
   helpers,
 } from "vuelidate/lib/validators";
 
-const phoneRegex = helpers.regex("phoneRegex", /^[+]?[(]?[0-9]{2}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im);
+const phoneRegex = helpers.regex(
+  "phoneRegex",
+  /^[+]?[(]?[0-9]{2}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im
+);
 
 export default {
   mixins: [validationMixin],
@@ -86,8 +91,10 @@ export default {
     return {
       form: {
         email: null,
-        username: null,
+        userName: null,
         phoneNumber: null,
+        value: 0,
+        products: null,
       },
     };
   },
@@ -97,7 +104,7 @@ export default {
         required,
         email,
       },
-      username: {
+      userName: {
         required,
         minLength: minLength(3),
         maxLength: maxLength(30),
@@ -115,12 +122,48 @@ export default {
       const { $dirty, $error } = this.$v.form[name];
       return $dirty ? !$error : null;
     },
+    computeCost() {
+      let total = 0;
+      _.each(this.$store.state.shoppingCart, function (product) {
+        total += _.get(product, "quantity", 0) * _.get(product, "price", 0);
+      });
+      return total.toFixed(2);
+    },
+    addOrder() {
+      this.form.products = _.map(
+        this.$store.state.shoppingCart,
+        function (prod) {
+          return {
+            productId: prod.id,
+            quantity: prod.quantity,
+          };
+        }
+      );
+      this.form.value = this.computeCost();
+      console.log("FORM:");
+      console.log(this.form);
+      axios
+        .post(
+          "https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/orders",
+          this.form
+        )
+        .then((response) => {
+          console.log("response:");
+          console.log(response);  
+          alert(response.data.message);
+        })
+        .catch((error) => {
+          console.log("error:");
+          console.log(error);
+          alert(error.message);
+        });
+    },
     onSubmit() {
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {
         return;
       }
-      alert("Form submitted!");
+      this.addOrder();
     },
   },
   mounted() {
