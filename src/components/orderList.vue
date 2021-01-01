@@ -23,8 +23,8 @@
         </li>
         </ol>
       </template>
-      <template #cell(action)="data" >
-        <b-row>
+      <template v-if="!hideActionButtons" #cell(action)="data">
+        <b-row >
           <b-button class="m-1" variant="success"
                     @click="updateOrderStatus(data.item.order.id, 4)"
           >COMPLETED</b-button>
@@ -47,6 +47,10 @@ export default {
     statusId: {
       type: String,
       required: true,
+    },
+    hideActionButtons: {
+      type: Boolean,
+      default: false
     }
   },
   name: "productList",
@@ -92,7 +96,7 @@ export default {
               {status: statusId}
           )
           .then((response) => {
-            this.orders = _.filter(this.orderList, function (item) {
+            this.orders = _.filter(this.orders, function (item) {
               return item.order.id !== orderId;
             });
             this.updateList();
