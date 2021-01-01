@@ -34,9 +34,8 @@
         </b-row>
       </template>
     </b-table>
-    <b-button variant="info col-sm-12" type="button" v-on:click="addItem()"
-    >Show more</b-button
-    >
+    <b-button v-if="productList.length > 5 && iterator*5 < productList.length "
+              variant="info col-sm-12" type="button" v-on:click="addItem()">Show more</b-button>
 
     <b-modal ref="bv-modal-example" title="Update product" hide-footer>
       <Productdata />
@@ -91,7 +90,7 @@ export default {
       this.updateList();
     },
     updateList: function () {
-      this.pagedProductList = _.first(this.productList, 2 * this.iterator);
+      this.pagedProductList = _.first(this.productList, 5 * this.iterator);
     },
     addProductToCart: function (product) {
       this.$store.dispatch('addItemToCart', product);
