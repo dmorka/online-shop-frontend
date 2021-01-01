@@ -10,6 +10,9 @@
           <router-link class="router-link" to="/orders">Orders</router-link>
         </b-nav-item>
         <b-nav-item>
+          <router-link class="router-link" to="/orders-by-status">Orders By Status</router-link>
+        </b-nav-item>
+        <b-nav-item>
           <router-link class="router-link" to="/stock">Stock</router-link>
         </b-nav-item>
         <b-nav-item>

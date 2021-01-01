@@ -5,6 +5,7 @@ import Supply from './pages/stock'
 import Shop from './pages/shop'
 import ShoppingCart from './pages/shopingCart'
 import Orders from './pages/orders'
+import OrdersByStatus from './pages/ordersByStatus'
 import store from './utils/store'
 import App from "@/App";
 
@@ -15,6 +16,7 @@ const routes = [
   { path: '/stock', component: Supply },
   { path: '/cart', component: ShoppingCart },
   { path: '/orders', component: Orders },
+  { path: '/orders-by-status', component: OrdersByStatus },
 ]
 
 const router = new VueRouter({

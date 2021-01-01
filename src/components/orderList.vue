@@ -23,7 +23,7 @@
         </li>
         </ol>
       </template>
-      <template #cell(action)="data">
+      <template #cell(action)="data" >
         <b-row>
           <b-button class="m-1" variant="success"
                     @click="updateOrderStatus(data.item.order.id, 4)"
@@ -34,7 +34,7 @@
         </b-row>
       </template>
     </b-table>
-    <b-button v-if="orderList.length > 5 && iterator*5 < orderList.length " variant="info col-sm-12" type="button" v-on:click="addItem()">Show more</b-button>
+    <b-button v-if="orderList!=null && orderList.length > 5 && iterator*5 < orderList.length " variant="info col-sm-12" type="button" v-on:click="addItem()">Show more</b-button>
   </div>
 </template>
 
@@ -44,10 +44,10 @@ import axios from "axios";
 import moment from "moment";
 export default {
   props: {
-    orderList: {
-      type: Array,
-      required: false
-    },
+    statusId: {
+      type: String,
+      required: true,
+    }
   },
   name: "productList",
   data () {
@@ -59,10 +59,11 @@ export default {
         { key: "products", label: "Product List"},
         { key: "action", label: "Action"}
       ],
-      iterator: 0,
+      iterator: 1,
       pagedOrderList: null,
       productList: null,
-      orders: this.orderList
+      orderList: null,
+      orders: null
     }
   },
   methods: {
@@ -100,20 +101,37 @@ export default {
           .catch((error) => {
             alert(error.message);
           });
+    },
+    fetchProductList: function () {
+      axios
+          .get('https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/products')
+          .then(response => {
+            this.productList = response.data.products;
+          })
+          .catch(error => {
+            console.log(error)
+            this.errored = true
+          })
+          .finally(() => this.loading = false)
+    },
+    fetchOrderListByStatus: function () {
+      axios
+          .get('https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/orders/status/'+this.statusId)
+          .then(response => {
+            this.orderList = response.data.orders;
+            this.orders = this.orderList;
+            this.updateList();
+          })
+          .catch(error => {
+            console.log(error)
+            this.errored = true
+          })
+          .finally(() => this.loading = false)
     }
   },
   mounted() {
-    axios
-        .get('https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/products')
-        .then(response => {
-          this.productList = response.data.products;
-        })
-        .catch(error => {
-          console.log(error)
-          this.errored = true
-        })
-        .finally(() => this.loading = false)
-    this.addItem();
+    this.fetchProductList();
+    this.fetchOrderListByStatus();
   }
 }
 </script>
