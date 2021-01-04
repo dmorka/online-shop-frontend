@@ -9,7 +9,7 @@ import OrdersByStatus from './pages/ordersByStatus'
 import store from './utils/store'
 import App from "@/App";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   { path: '/', component: Shop },

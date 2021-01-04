@@ -91,9 +91,8 @@ export default {
     updateOrderStatus: function (orderId, statusId) {
       axios
           .put(
-              "https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/orders/" +
-              orderId,
-              {status: statusId}
+              process.env.VUE_APP_API_URL+"/orders/" + orderId,
+              {status: statusId},{headers: {'x-api-key': process.env.VUE_APP_API_KEY}}
           )
           .then((response) => {
             this.orders = _.filter(this.orders, function (item) {
@@ -108,7 +107,8 @@ export default {
     },
     fetchProductList: function () {
       axios
-          .get('https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/products')
+          .get(process.env.VUE_APP_API_URL+'/products',
+              {headers: {'x-api-key': process.env.VUE_APP_API_KEY}})
           .then(response => {
             this.productList = response.data.products;
           })
@@ -120,7 +120,8 @@ export default {
     },
     fetchOrderListByStatus: function () {
       axios
-          .get('https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/orders/status/'+this.statusId)
+          .get(process.env.VUE_APP_API_URL+'/orders/status/'+this.statusId,
+              {headers: {'x-api-key': process.env.VUE_APP_API_KEY}})
           .then(response => {
             this.orderList = response.data.orders;
             this.orders = this.orderList;

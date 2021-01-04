@@ -2,7 +2,7 @@
   <b-container>
     <Navbar/>
     <h2 class="display-4 text-center">Orders</h2>
-        <Orders status-id="1"/>
+    <Orders status-id="1"/>
   </b-container>
 </template>
 
@@ -10,6 +10,7 @@
 import Navbar from "@/components/navBar";
 import Orders from '@/components/orderList'
 import axios from 'axios';
+
 export default {
   name: "orders",
   components: {Navbar, Orders},
@@ -21,7 +22,8 @@ export default {
   },
   mounted() {
     axios
-        .get('https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/orders/status/1')
+        .get(process.env.VUE_APP_API_URL+'/orders/status/1',
+            {headers: {'x-api-key': process.env.VUE_APP_API_KEY}})
         .then(response => {
           this.orderList = response.data.orders;
         })

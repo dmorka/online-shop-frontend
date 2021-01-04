@@ -147,8 +147,8 @@ export default {
       this.form.value = this.computeCost();
       axios
         .post(
-          "https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/orders",
-          this.form
+            process.env.VUE_APP_API_URL+"/orders",
+          this.form, {headers: {'x-api-key': process.env.VUE_APP_API_KEY}}
         )
         .then((response) => {
           alert(response.data.message);
@@ -171,7 +171,6 @@ export default {
   },
   mounted() {
     EventBus.$on("UpdateProduct", (product) => {
-      console.log(product);
       this.form = product;
     });
   },

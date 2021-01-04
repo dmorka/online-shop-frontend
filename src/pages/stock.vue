@@ -48,8 +48,9 @@ export default {
     addNewProduct: function (form) {
       axios
           .post(
-              "https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/products",
-              form
+              process.env.VUE_APP_API_URL+"/products",
+              form,
+              {headers: {'x-api-key': process.env.VUE_APP_API_KEY}}
           )
           .then((response) => {
             alert(response.data.message);
@@ -62,9 +63,12 @@ export default {
     }
   },
   mounted() {
+    console.log("apikey");
+    console.log(process.env.VUE_APP_API_KEY);
     axios
       .get(
-        "https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/products"
+        process.env.VUE_APP_API_URL+"/products",
+          {headers: {'x-api-key': process.env.VUE_APP_API_KEY}}
       )
       .then((response) => {
         this.productList = response.data.products;

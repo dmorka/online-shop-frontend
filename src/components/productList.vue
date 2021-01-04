@@ -109,9 +109,8 @@ export default {
     updateProduct: function(form) {
       axios
           .put(
-              "https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/products/" +
-              form.id,
-              form
+              process.env.VUE_APP_API_URL+"/products/" + form.id,
+              form, {headers: {'x-api-key': process.env.VUE_APP_API_KEY}}
           )
           .then((response) => {
             alert(response.data.message);
