@@ -16,7 +16,6 @@ const store = new Vuex.Store({
             return state.shoppingCart;
         }
     },
-
     mutations: {
         addItemToCart(state, product) {
             let found = _.find(state.shoppingCart, function (item) {
@@ -42,6 +41,9 @@ const store = new Vuex.Store({
             if (item) {
                 item.quantity = product.quantity;
             }
+        },
+        clearShoppingCart(state) {
+            state.shoppingCart = []
         }
     },
 
@@ -60,6 +62,9 @@ const store = new Vuex.Store({
             if (product != null) {
                 context.commit('changeQuantity', product);
             }
+        },
+        clearShoppingCart(context) {
+            context.commit('clearShoppingCart');
         }
     },
     plugins: [

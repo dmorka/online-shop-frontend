@@ -103,7 +103,6 @@ body {
 <script>
 import { validationMixin } from "vuelidate";
 import EventBus from "@/utils/event-bus";
-import axios from "axios";
 import {
   required,
   minLength,
@@ -114,6 +113,12 @@ import {
 
 export default {
   mixins: [validationMixin],
+  props: {
+    clicked: {
+      type: Function,
+      required: true
+    }
+  },
   data() {
     return {
       form: {
@@ -137,7 +142,7 @@ export default {
       name: {
         required,
         minLength: minLength(3),
-        maxLength: maxLength(20),
+        maxLength: maxLength(100),
       },
       description: {
         required,
@@ -164,26 +169,12 @@ export default {
       const { $dirty, $error } = this.$v.form[name];
       return $dirty ? !$error : null;
     },
-    updateProduct() {
-      axios
-        .put(
-          "https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/products/" +
-            this.form.id,
-          this.form
-        )
-        .then((response) => {
-          alert(response.data.message);
-        })
-        .catch((error) => {
-          alert(error.message);
-        })
-    },
     onSubmit() {
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {
         return;
       }
-      this.updateProduct();
+      this.clicked(this.form);
     },
   },
   mounted() {

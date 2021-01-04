@@ -27,7 +27,7 @@
               class="m-1"
               v-if="showEditButton"
               variant="warning"
-              v-on:click="updateProduct(data.item)"
+              v-on:click="showUpdateProductDialog(data.item)"
           >Edit</b-button>
           <b-button v-if="showRemoveButton" class="m-1" variant="danger" @click="removeProduct(data.item)">Remove
           </b-button>
@@ -38,7 +38,7 @@
               variant="info col-sm-12" type="button" v-on:click="addItem()">Show more</b-button>
 
     <b-modal ref="bv-modal-example" title="Update product" hide-footer>
-      <Productdata />
+      <Productdata :clicked="updateProduct"/>
     </b-modal>
   </div>
 </template>
@@ -47,6 +47,7 @@
 import { _ } from "vue-underscore";
 import EventBus from "@/utils/event-bus";
 import Productdata from "@/components/productData";
+import axios from "axios";
 export default {
   components: { Productdata },
   props: {
@@ -101,11 +102,23 @@ export default {
     quantityChanged: function (product) {
       this.$store.dispatch('changeQuantity', product);
     },
-    updateProduct(product) {
+    showUpdateProductDialog(product) {
       setTimeout(function () {EventBus.$emit("UpdateProduct", product)}, 300)
       this.$refs["bv-modal-example"].show();
-
-      console.log(product);
+    },
+    updateProduct: function(form) {
+      axios
+          .put(
+              "https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/products/" +
+              form.id,
+              form
+          )
+          .then((response) => {
+            alert(response.data.message);
+          })
+          .catch((error) => {
+            alert(error.message);
+          })
     },
   },
   mounted() {

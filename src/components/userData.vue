@@ -1,6 +1,6 @@
 <template>
   <div class="userdata">
-    <b-form @submit.stop.prevent="onSubmit">
+    <b-form ref="orderForm" @submit.stop.prevent="onSubmit">
       <b-form-group
         id="userName-input-group"
         label="Username"
@@ -124,14 +124,19 @@ export default {
     },
     computeCost() {
       let total = 0;
-      _.each(this.$store.state.shoppingCart, function (product) {
+      _.each(this.$store.getters.getShoppingCart, function (product) {
         total += _.get(product, "quantity", 0) * _.get(product, "price", 0);
       });
       return total.toFixed(2);
     },
     addOrder() {
+      if (this.$store.getters.getShoppingCart.length === 0) {
+        alert("You cannot place an order with an empty cart!")
+        return;
+      }
+
       this.form.products = _.map(
-        this.$store.state.shoppingCart,
+          this.$store.getters.getShoppingCart,
         function (prod) {
           return {
             productId: prod.id,
@@ -140,20 +145,18 @@ export default {
         }
       );
       this.form.value = this.computeCost();
-      console.log("FORM:");
-      console.log(this.form);
       axios
         .post(
           "https://9nxyebc8af.execute-api.eu-central-1.amazonaws.com/dev/orders",
           this.form
         )
         .then((response) => {
-          console.log("response:");
-          console.log(response);  
           alert(response.data.message);
+          this.$store.dispatch('clearShoppingCart');
+          EventBus.$emit("UpdateProductList");
+          this.$refs.orderForm.reset();
         })
         .catch((error) => {
-          console.log("error:");
           console.log(error);
           alert(error.message);
         });
