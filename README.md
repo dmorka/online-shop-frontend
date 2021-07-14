@@ -7,7 +7,7 @@ This is my first Vue.js project. A simple online shop application.
 Applications in interpreted languages
 
 ### Programming language:
-Vue.js
+Vue.js + Vuex + Underscore.js
 
 ### Date:
 2020
