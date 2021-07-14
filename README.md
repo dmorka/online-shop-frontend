@@ -1,24 +1,13 @@
-# online-shop-frontend
+# Online shop - frontend
 
-## Project setup
-```
-npm install
-```
+## Description:
+This is my first Vue.js project. A simple online shop application.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### Subject:
+Applications in interpreted languages
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### Programming language:
+Vue.js
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Date:
+2020
